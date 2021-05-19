@@ -22,8 +22,19 @@ class App extends React.Component {
   };
 
   loadSampleFishes = () => {
-    this.setState({fishes: sampleFishes});
+    this.setState({ fishes: sampleFishes });
   }
+
+  addToOrder = (key) => {
+    // take a copy of state
+    const order = { ...this.state.order };
+    console.log(key);
+    // increment the quantity for the key, or initiate the quantity
+    // note that "key" is given when we call the fish component in render()
+    order[key] = order[key] + 1 || 1;
+    // then we need to update the state else it's like nothing happened
+    this.setState({ order }); // equivalent to this.setState({order: order})
+  };
 
   render() {
     return (
@@ -31,7 +42,13 @@ class App extends React.Component {
         <div className="menu">
           <Header tagline="From Wes Cos to Es Cos" />
           <ul className="fishes">
-            {Object.keys(this.state.fishes).map(key => <Fish key = {key} details={this.state.fishes[key]}/>)}
+            {Object.keys(this.state.fishes).map(key => <Fish
+                                                            key = {key}
+                                                            index = {key}
+                                                            details={this.state.fishes[key]}
+                                                            addToOrder={this.addToOrder}
+                                                            />
+            )}
           </ul>
         </div>
         <Order />
