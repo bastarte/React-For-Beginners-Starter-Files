@@ -10,8 +10,6 @@ class AddFishForm extends React.Component {
 
   createFish = event => {
     event.preventDefault();
-    console.log(event);
-    console.log(this.descRef.current.value);
 
     const fish = {
     name: this.nameRef.current.value,
@@ -20,8 +18,9 @@ class AddFishForm extends React.Component {
     desc: this.descRef.current.value,
     image: this.imageRef.current.value,
     }
-    console.log(fish);
+    this.props.addFish(fish);
 
+    event.currentTarget.reset();
   }
 
   render() {
