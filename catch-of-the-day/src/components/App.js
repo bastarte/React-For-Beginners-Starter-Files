@@ -12,7 +12,6 @@ class App extends React.Component {
   };
 
   addFish = fish => {
-    console.log(this); // state was defined manually
     const fishes = { ...this.state.fishes }; // we just copy fishes into fishes
     fishes[`fish${Date.now()}`] = fish; // and we add one more fish
     // then we pass the pieces we want to be updated
@@ -28,7 +27,6 @@ class App extends React.Component {
   addToOrder = (key) => {
     // take a copy of state
     const order = { ...this.state.order };
-    console.log(key);
     // increment the quantity for the key, or initiate the quantity
     // note that "key" is given when we call the fish component in render()
     order[key] = order[key] + 1 || 1;
@@ -51,7 +49,7 @@ class App extends React.Component {
             )}
           </ul>
         </div>
-        <Order />
+        <Order fishes={this.state.fishes} order={this.state.order} />
         <Inventory addFish={this.addFish} loadSampleFishes={this.loadSampleFishes}/>
       </div>
     );
