@@ -13,24 +13,35 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    const {params} = this.props.match;
-    // store reference to the database
+    const {params} = this.props.match; // we are going to dig through the routes (stored in match)
+    
     this.ref = base.syncState(`${params.storeId}/fishes`, {
       context: this,
       state: 'fishes'
     });
+
+    const localStorageRef = localStorage.getItem(params.storeId);
+    if (localStorageRef) {
+      this.setState({order: JSON.parse(localStorageRef)})
+    };
+    console.log(localStorageRef);
+    // store reference to the database
   }
 
+  // If the component is updated, we store the new state in the local storage
   componentDidUpdate() {
-    console.log("it updated");
+    const {params} = this.props.match; // we are going to dig through the routes (stored in match)
+    console.log(this.state.order);
+    localStorage.setItem(params.storeId, JSON.stringify(this.state.order));
   }
 
+  // to free memory stuff
   componentWillUnmount() {
     base.removeBinding(this.ref);
   }
 
   addFish = fish => {
-    const fishes = { ...this.state.fishes }; // we just copy fishes into fishes
+    const fishes = { ...this.state.fishes }; // we just copy fishes (from state) into fishes
     fishes[`fish${Date.now()}`] = fish; // and we add one more fish
     // then we pass the pieces we want to be updated
     this.setState({
