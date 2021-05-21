@@ -14,7 +14,7 @@ class App extends React.Component {
 
   componentDidMount() {
     const {params} = this.props.match; // we are going to dig through the routes (stored in match)
-    
+
     this.ref = base.syncState(`${params.storeId}/fishes`, {
       context: this,
       state: 'fishes'
@@ -49,6 +49,15 @@ class App extends React.Component {
     });
   };
 
+  updateFish = (key, updatedFish) => {
+    // store state in a variable
+    const fishes = { ...this.state.fishes };
+    // update the variable with the updatedFish
+    fishes[key] = updatedFish ;
+    // put it back in the state
+    this.setState({ fishes });
+  }
+
   loadSampleFishes = () => {
     this.setState({ fishes: sampleFishes });
   }
@@ -79,7 +88,12 @@ class App extends React.Component {
           </ul>
         </div>
         <Order fishes={this.state.fishes} order={this.state.order} />
-        <Inventory addFish={this.addFish} loadSampleFishes={this.loadSampleFishes}/>
+        <Inventory
+          addFish={this.addFish}
+          loadSampleFishes={this.loadSampleFishes}
+          updateFish={this.updateFish}
+          fishes = {this.state.fishes}
+        />
       </div>
     );
   }
